@@ -9,11 +9,13 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'git-clima-credential', url: 'git@github.com:morahakim/Clima-App.git'
-            }
-        }
+
+        // HAPUS STAGE CHECKOUT INI
+        // stage('Checkout') {
+        //     steps {
+        //         git credentialsId: 'git-clima-credential', url: 'git@github.com:morahakim/Clima-App.git'
+        //     }
+        // }
 
         stage('Install Dependencies') {
             steps {
