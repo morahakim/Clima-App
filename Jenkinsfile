@@ -8,12 +8,12 @@ pipeline {
         EXPORT_OPTIONS_PLIST = "ExportOptions.plist"
     }
 
-  stage('Checkout') {
-    steps {
-        git credentialsId: 'git-clima-credential', url: 'git@github.com:morahakim/Clima-App.git'
-    }
-}
-
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'git-clima-credential', url: 'git@github.com:morahakim/Clima-App.git'
+            }
+        }
 
         stage('Install Dependencies') {
             steps {
@@ -28,17 +28,4 @@ pipeline {
         stage('Build IPA') {
             steps {
                 sh '''
-                xcodebuild clean -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -configuration Release
-                xcodebuild archive -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -archivePath build/$PROJECT_NAME.xcarchive
-                xcodebuild -exportArchive -archivePath build/$PROJECT_NAME.xcarchive -exportPath build/IPA -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
-                '''
-            }
-        }
-
-        stage('Archive IPA') {
-            steps {
-                archiveArtifacts artifacts: 'build/IPA/*.ipa', fingerprint: true
-            }
-        }
-    }
-}
+                xcodebuild clean -
