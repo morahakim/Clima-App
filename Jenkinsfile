@@ -6,7 +6,7 @@ pipeline {
         SCHEME_NAME = "Clima"
         PROJECT_FILE = "Clima.xcodeproj"
         EXPORT_OPTIONS_PLIST = "ExportOptions.plist"
-        DEVELOPMENT_TEAM_ID = "D4U5RR9J3N" // Ganti ini dengan Team ID kamu
+        DEVELOPMENT_TEAM_ID = "D4U5RR9J3N" // Ganti sesuai Team ID milikmu
     }
 
     stages {
@@ -23,13 +23,20 @@ pipeline {
         stage('Build IPA') {
             steps {
                 sh '''
+                # Clean the project
                 xcodebuild clean -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -configuration Release
-                xcodebuild archive -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" \
+
+                # Archive the app with proper signing settings
+                xcodebuild archive \
+                    -project "$PROJECT_FILE" \
+                    -scheme "$SCHEME_NAME" \
                     -archivePath build/$PROJECT_NAME.xcarchive \
                     DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM_ID \
                     CODE_SIGN_STYLE=Automatic \
-                    CODE_SIGN_IDENTITY="Apple Development"
-                    
+                    CODE_SIGN_IDENTITY="Apple Development" \
+                    -allowProvisioningUpdates
+
+                # Export the IPA
                 xcodebuild -exportArchive \
                     -archivePath build/$PROJECT_NAME.xcarchive \
                     -exportPath build/IPA \
