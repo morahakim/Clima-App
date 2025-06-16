@@ -6,7 +6,7 @@ pipeline {
         SCHEME_NAME = "Clima"
         PROJECT_FILE = "Clima.xcodeproj"
         EXPORT_OPTIONS_PLIST = "ExportOptions.plist"
-        DEVELOPMENT_TEAM_ID = "QQVZLC397C" // Ganti sesuai Team ID milikmu
+        DEVELOPMENT_TEAM_ID = "QQVZLC397C"
     }
 
     stages {
@@ -26,11 +26,12 @@ pipeline {
                 # Clean the project
                 xcodebuild clean -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -configuration Release
 
-                # Archive the app with proper signing settings
+                # Archive the app (build for generic iOS device)
                 xcodebuild archive \
                     -project "$PROJECT_FILE" \
                     -scheme "$SCHEME_NAME" \
                     -archivePath build/$PROJECT_NAME.xcarchive \
+                    -destination 'generic/platform=iOS' \
                     DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM_ID \
                     CODE_SIGN_STYLE=Automatic \
                     CODE_SIGN_IDENTITY="Apple Development" \
