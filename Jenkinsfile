@@ -6,7 +6,7 @@ pipeline {
         SCHEME_NAME = "Clima"
         PROJECT_FILE = "Clima.xcodeproj"
         EXPORT_OPTIONS_PLIST = "ExportOptions.plist"
-        DEVELOPMENT_TEAM_ID = "PT Bank Syariah Indonesia, TBK" // Ganti ini dengan Team ID kamu
+        DEVELOPMENT_TEAM_ID = "D4U5RR9J3N" // Ganti ini dengan Team ID kamu
     }
 
     stages {
