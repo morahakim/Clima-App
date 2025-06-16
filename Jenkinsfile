@@ -8,12 +8,12 @@ pipeline {
         EXPORT_OPTIONS_PLIST = "ExportOptions.plist"
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'git-clima-credential ', url: 'https://github.com/username/Clima.git'
-            }
-        }
+  stage('Checkout') {
+    steps {
+        git credentialsId: 'git-clima-credential', url: 'git@github.com:morahakim/Clima-App.git'
+    }
+}
+
 
         stage('Install Dependencies') {
             steps {
