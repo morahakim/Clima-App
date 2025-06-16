@@ -6,15 +6,10 @@ pipeline {
         SCHEME_NAME = "Clima"
         PROJECT_FILE = "Clima.xcodeproj"
         EXPORT_OPTIONS_PLIST = "ExportOptions.plist"
+        DEVELOPMENT_TEAM_ID = "QQVZLC397C"
     }
 
-  stage('Checkout') {
-    steps {
-        git credentialsId: 'git-clima-credential', url: 'git@github.com:morahakim/Clima-App.git'
-    }
-}
-
-
+    stages {
         stage('Install Dependencies') {
             steps {
                 sh '''
@@ -28,9 +23,25 @@ pipeline {
         stage('Build IPA') {
             steps {
                 sh '''
+                # Clean the project
                 xcodebuild clean -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -configuration Release
-                xcodebuild archive -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -archivePath build/$PROJECT_NAME.xcarchive
-                xcodebuild -exportArchive -archivePath build/$PROJECT_NAME.xcarchive -exportPath build/IPA -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
+
+                # Archive the app (build for generic iOS device)
+                xcodebuild archive \
+                    -project "$PROJECT_FILE" \
+                    -scheme "$SCHEME_NAME" \
+                    -archivePath build/$PROJECT_NAME.xcarchive \
+                    -destination 'generic/platform=iOS' \
+                    DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM_ID \
+                    CODE_SIGN_STYLE=Automatic \
+                    CODE_SIGN_IDENTITY="Apple Development" \
+                    -allowProvisioningUpdates
+
+                # Export the IPA
+                xcodebuild -exportArchive \
+                    -archivePath build/$PROJECT_NAME.xcarchive \
+                    -exportPath build/IPA \
+                    -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
                 '''
             }
         }
