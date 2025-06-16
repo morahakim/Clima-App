@@ -28,4 +28,17 @@ pipeline {
         stage('Build IPA') {
             steps {
                 sh '''
-                xcodebuild clean -
+                xcodebuild clean -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -configuration Release
+                xcodebuild archive -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -archivePath build/$PROJECT_NAME.xcarchive
+                xcodebuild -exportArchive -archivePath build/$PROJECT_NAME.xcarchive -exportPath build/IPA -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
+                '''
+            }
+        }
+
+        stage('Archive IPA') {
+            steps {
+                archiveArtifacts artifacts: 'build/IPA/*.ipa', fingerprint: true
+            }
+        }
+    }
+}
