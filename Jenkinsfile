@@ -6,17 +6,10 @@ pipeline {
         SCHEME_NAME = "Clima"
         PROJECT_FILE = "Clima.xcodeproj"
         EXPORT_OPTIONS_PLIST = "ExportOptions.plist"
+        DEVELOPMENT_TEAM_ID = "PT Bank Syariah Indonesia, TBK" // Ganti ini dengan Team ID kamu
     }
 
     stages {
-
-        // HAPUS STAGE CHECKOUT INI
-        // stage('Checkout') {
-        //     steps {
-        //         git credentialsId: 'git-clima-credential', url: 'git@github.com:morahakim/Clima-App.git'
-        //     }
-        // }
-
         stage('Install Dependencies') {
             steps {
                 sh '''
@@ -31,8 +24,16 @@ pipeline {
             steps {
                 sh '''
                 xcodebuild clean -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -configuration Release
-                xcodebuild archive -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" -archivePath build/$PROJECT_NAME.xcarchive
-                xcodebuild -exportArchive -archivePath build/$PROJECT_NAME.xcarchive -exportPath build/IPA -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
+                xcodebuild archive -project "$PROJECT_FILE" -scheme "$SCHEME_NAME" \
+                    -archivePath build/$PROJECT_NAME.xcarchive \
+                    DEVELOPMENT_TEAM=$DEVELOPMENT_TEAM_ID \
+                    CODE_SIGN_STYLE=Automatic \
+                    CODE_SIGN_IDENTITY="Apple Development"
+                    
+                xcodebuild -exportArchive \
+                    -archivePath build/$PROJECT_NAME.xcarchive \
+                    -exportPath build/IPA \
+                    -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
                 '''
             }
         }
