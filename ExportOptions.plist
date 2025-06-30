@@ -4,16 +4,9 @@
 <plist version="1.0">
 <dict>
     <key>method</key>
-    <string>ad-hoc</string>
+    <string>ad-hoc</string> <!-- bisa diganti 'development' juga -->
     <key>signingStyle</key>
-    <string>manual</string>
-    <key>teamID</key>
-    <string>QQVZLC397C</string>
-    <key>provisioningProfiles</key>
-    <dict>
-        <key>com.morahakim.clima</key>
-        <string>Clima_AdHoc_Profile</string>
-    </dict>
+    <string>automatic</string>
     <key>stripSwiftSymbols</key>
     <true/>
     <key>compileBitcode</key>
