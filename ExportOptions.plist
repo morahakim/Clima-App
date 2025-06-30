@@ -11,8 +11,8 @@
     <string>QQVZLC397C</string>
     <key>provisioningProfiles</key>
     <dict>
-        <key>co.id.bankbsi.superapp</key>
-        <string>Nama_Provisioning_Profile_AdHoc</string>
+        <key>com.morahakim.clima</key>
+        <string>Clima_AdHoc_Profile</string>
     </dict>
     <key>stripSwiftSymbols</key>
     <true/>
